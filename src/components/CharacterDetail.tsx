@@ -30,7 +30,7 @@ export function CharacterDetail({ character }: { character: Character }): ReactE
           src={character.image}
           alt={`Portrait of ${character.name}`}
           fill
-          className="object-cover object-top"
+          className="object-contain object-top"
           sizes="(max-width: 1024px) 100vw, 640px"
           priority
         />

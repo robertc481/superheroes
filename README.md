@@ -1,5 +1,7 @@
 # Superhero Roster
 
+Live version is available at: https://superheroes-eight.vercel.app/
+
 A **Next.js (App Router) + TypeScript** take-home: browse a fixed roster from `characters.json`, filter by power type, universe, and hero/villain type, search by name or alias, open static detail pages, and keep **favorites** in the browser with **Zustand** (persisted). Styling is **Tailwind CSS v4** with a light/dark theme (**next-themes**).
 
 This README covers **how to run the project locally**, a **short summary of main technical decisions**, and **where SSR, SSG, ISR, and CSR are used and why**—as requested in the brief.
