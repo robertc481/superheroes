@@ -1,6 +1,16 @@
-export type PowerType = "Strength" | "Speed" | "Intelligence" | "Magic";
-export type Universe = "Marvel" | "DC";
-export type CharacterType = "hero" | "villain";
+export const POWER_TYPES = [
+  "Strength",
+  "Speed",
+  "Intelligence",
+  "Magic",
+] as const;
+export type PowerType = (typeof POWER_TYPES)[number];
+
+export const UNIVERSES = ["Marvel", "DC"] as const;
+export type Universe = (typeof UNIVERSES)[number];
+
+export const CHARACTER_TYPES = ["hero", "villain"] as const;
+export type CharacterType = (typeof CHARACTER_TYPES)[number];
 
 export interface PowerStats {
   strength: number;
@@ -32,5 +42,4 @@ export interface FilterState {
 
 export type FilterResult =
   | { status: "results"; characters: Character[] }
-  | { status: "empty" }
-  | { status: "error"; message: string };
+  | { status: "empty" };

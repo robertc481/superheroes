@@ -1,3 +1,5 @@
+import type { CharacterType, Universe } from "@/types";
+
 export function scoreBadgeClass(score: number): string {
   if (score >= 8) {
     return "bg-green-600 text-white dark:bg-green-500";
@@ -8,14 +10,20 @@ export function scoreBadgeClass(score: number): string {
   return "bg-red-600 text-white dark:bg-red-500";
 }
 
-export function universeBadgeColorClass(universe: string): string {
-  return universe === "Marvel"
-    ? "bg-red-700/90 text-white"
-    : "bg-blue-700/90 text-white";
+export function universeBadgeColorClass(universe: Universe): string {
+  switch (universe) {
+    case "Marvel":
+      return "bg-red-700/90 text-white";
+    case "DC":
+      return "bg-blue-700/90 text-white";
+  }
 }
 
-export function typeBadgeColorClass(type: string): string {
-  return type === "hero"
-    ? "bg-emerald-700/90 text-white"
-    : "bg-rose-700/90 text-white";
+export function typeBadgeColorClass(type: CharacterType): string {
+  switch (type) {
+    case "hero":
+      return "bg-emerald-700/90 text-white";
+    case "villain":
+      return "bg-rose-700/90 text-white";
+  }
 }

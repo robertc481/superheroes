@@ -1,2 +1,40 @@
 @import "tailwindcss";
-@config "../../tailwind.config.mjs";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-hero-primary: #1e3a5f;
+  --color-hero-secondary: #c62828;
+  --color-hero-accent: #f9a825;
+  --color-hero-dark: #0d1b2a;
+  --color-hero-light: #e0e7ef;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-ui: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Match native form controls / scrollbars to the active theme class (next-themes). */
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-hero-secondary) 32%, transparent);
+    color: inherit;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    font-feature-settings: "kern" 1, "liga" 1, "lnum" 1;
+  }
+}

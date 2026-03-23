@@ -1,4 +1,3 @@
-// CONFLICT: scaffold used Geist fonts; plan specifies Inter-style heading/body via CSS variables — using Inter for both.
 import { Header } from "@/components/Header";
 import { Providers } from "@/components/providers/Providers";
 import type { Metadata } from "next";
@@ -6,15 +5,10 @@ import { Inter } from "next/font/google";
 import type { ReactElement } from "react";
 import "./globals.css";
 
-const interBody = Inter({
-  variable: "--font-body",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const interHeading = Inter({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: "variable",
 });
 
 export const metadata: Metadata = {
@@ -28,15 +22,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): ReactElement {
   return (
-    <html
-      lang="en"
-      className={`${interBody.variable} ${interHeading.variable} h-full`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={`${inter.variable} h-full`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-hero-light font-body text-hero-primary antialiased dark:bg-hero-dark dark:text-hero-light">
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:inline-block focus:h-auto focus:w-auto focus:overflow-visible focus:rounded-lg focus:bg-hero-secondary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:outline-none focus:ring-2 focus:ring-hero-accent"
+          >
+            Skip to main content
+          </a>
           <Header />
-          <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">{children}</main>
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 outline-none"
+          >
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

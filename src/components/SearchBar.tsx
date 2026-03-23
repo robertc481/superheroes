@@ -65,8 +65,6 @@ export function SearchBar({ initialQuery }: { initialQuery: string }): ReactElem
         onChange={onChange}
         placeholder="Search by name or alias…"
         className="w-full rounded-lg border border-hero-primary/25 bg-white px-4 py-2 pr-10 font-body text-hero-primary shadow-sm focus:border-hero-secondary focus:outline-none focus:ring-2 focus:ring-hero-accent/40 dark:border-hero-light/20 dark:bg-hero-dark dark:text-hero-light"
-        aria-label="Search characters by name or alias"
-        role="searchbox"
         autoComplete="off"
       />
       {inputValue.length > 0 ? (

@@ -1,5 +1,6 @@
 import {
   ALL_CHARACTERS,
+  filterCharactersByFavoriteIds,
   filterHeroes,
   getVisibleHeroes,
   searchHeroes,
@@ -141,5 +142,21 @@ describe("getVisibleHeroes", () => {
     expect(out).toHaveLength(1);
     expect(out[0]?.id).toBe("thor");
   });
+});
 
+describe("filterCharactersByFavoriteIds", () => {
+  it("returns [] when favoriteIds is empty", () => {
+    expect(filterCharactersByFavoriteIds(characters, [])).toEqual([]);
+  });
+
+  it("returns only characters whose id is in favoriteIds", () => {
+    const out = filterCharactersByFavoriteIds(characters, ["batman", "thor"]);
+    expect(out.map((c) => c.id).sort()).toEqual(["batman", "thor"]);
+  });
+
+  it("ignores unknown ids", () => {
+    const out = filterCharactersByFavoriteIds(characters, ["batman", "nope"]);
+    expect(out).toHaveLength(1);
+    expect(out[0]?.id).toBe("batman");
+  });
 });

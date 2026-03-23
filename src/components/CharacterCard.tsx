@@ -14,24 +14,16 @@ export function CharacterCard({
   imagePriority?: boolean;
 }): ReactElement {
   const weaknessLabel: string = character.weakness ?? "Unknown";
+  const titleId = `card-title-${character.id}`;
 
   return (
     <div className="group relative h-full overflow-hidden rounded-xl border border-hero-primary/15 bg-white shadow-md transition hover:-translate-y-1 hover:shadow-lg dark:border-hero-light/10 dark:bg-hero-dark">
-      <div className="absolute right-2 top-2 z-10">
-        <FavoriteButton
-          characterId={character.id}
-          characterName={character.name}
-        />
-      </div>
       <Link
         href={`/character/${character.id}`}
         className="block h-full outline-none focus-visible:ring-2 focus-visible:ring-hero-accent focus-visible:ring-offset-2 dark:focus-visible:ring-offset-hero-dark"
-        aria-label={character.name}
+        aria-labelledby={titleId}
       >
-        <article
-          className="flex h-full flex-col"
-          aria-label={character.name}
-        >
+        <article className="flex h-full flex-col">
           <div className="relative aspect-[3/4] w-full bg-hero-light/50 dark:bg-hero-primary/20">
             <Image
               src={character.image}
@@ -44,7 +36,10 @@ export function CharacterCard({
           </div>
           <div className="flex flex-1 flex-col gap-2 p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-heading text-lg font-bold text-hero-primary dark:text-hero-light">
+              <h2
+                id={titleId}
+                className="font-heading text-lg font-bold text-hero-primary dark:text-hero-light"
+              >
                 {character.name}
               </h2>
               <span
@@ -73,6 +68,14 @@ export function CharacterCard({
           </div>
         </article>
       </Link>
+      <div className="pointer-events-none absolute right-2 top-2 z-10">
+        <div className="pointer-events-auto">
+          <FavoriteButton
+            characterId={character.id}
+            characterName={character.name}
+          />
+        </div>
+      </div>
     </div>
   );
 }

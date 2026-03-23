@@ -2,6 +2,7 @@ import {
   buildQueryString,
   parseFilterState,
   parseSearchQuery,
+  recordFromReadonlySearchParams,
 } from "@/lib/urlState";
 import type { FilterState } from "@/types";
 
@@ -57,5 +58,16 @@ describe("buildQueryString", () => {
       type: "hero",
     });
     expect(parseSearchQuery(normalized)).toBe("batman");
+  });
+});
+
+describe("recordFromReadonlySearchParams", () => {
+  it("records each key once when the same name appears multiple times", () => {
+    const sp = new URLSearchParams();
+    sp.append("a", "1");
+    sp.append("a", "2");
+    const rec = recordFromReadonlySearchParams(sp);
+    expect(Object.keys(rec)).toEqual(["a"]);
+    expect(rec["a"]).toEqual(["1", "2"]);
   });
 });

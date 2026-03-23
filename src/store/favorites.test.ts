@@ -1,4 +1,4 @@
-import { useFavoritesStore } from "@/store/favorites";
+import { isFavoriteId, useFavoritesStore } from "@/store/favorites";
 
 describe("useFavoritesStore", () => {
   beforeEach(() => {
@@ -8,15 +8,17 @@ describe("useFavoritesStore", () => {
 
   it("toggleFavorite adds character id to favoriteIds", () => {
     useFavoritesStore.getState().toggleFavorite("batman");
-    expect(useFavoritesStore.getState().favoriteIds).toEqual(["batman"]);
-    expect(useFavoritesStore.getState().isFavorite("batman")).toBe(true);
+    const { favoriteIds } = useFavoritesStore.getState();
+    expect(favoriteIds).toEqual(["batman"]);
+    expect(isFavoriteId(favoriteIds, "batman")).toBe(true);
   });
 
   it("toggleFavorite called again removes character id from favoriteIds", () => {
     useFavoritesStore.getState().toggleFavorite("batman");
     useFavoritesStore.getState().toggleFavorite("batman");
-    expect(useFavoritesStore.getState().favoriteIds).toEqual([]);
-    expect(useFavoritesStore.getState().isFavorite("batman")).toBe(false);
+    const { favoriteIds } = useFavoritesStore.getState();
+    expect(favoriteIds).toEqual([]);
+    expect(isFavoriteId(favoriteIds, "batman")).toBe(false);
   });
 
   it("persists state to localStorage under key superhero-favorites", () => {
@@ -26,17 +28,7 @@ describe("useFavoritesStore", () => {
     if (raw === null) {
       throw new Error("expected persisted payload");
     }
-    const parsed: unknown = JSON.parse(raw);
-    if (
-      typeof parsed !== "object" ||
-      parsed === null ||
-      !("state" in parsed) ||
-      typeof (parsed as { state: unknown }).state !== "object" ||
-      (parsed as { state: unknown }).state === null
-    ) {
-      throw new Error("unexpected persist shape");
-    }
-    const state = (parsed as { state: { favoriteIds?: string[] } }).state;
-    expect(state.favoriteIds).toEqual(["thor"]);
+    const parsed = JSON.parse(raw) as { state: { favoriteIds: string[] } };
+    expect(parsed.state.favoriteIds).toEqual(["thor"]);
   });
 });

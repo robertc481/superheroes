@@ -1,8 +1,8 @@
 "use client";
-// CLIENT COMPONENT — reason: Next.js error boundary requires client component for reset()
+
 import { useEffect, type ReactElement } from "react";
 
-export default function GlobalError({
+export default function ErrorBoundary({
   error,
   reset,
 }: {

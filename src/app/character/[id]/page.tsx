@@ -1,5 +1,5 @@
 import { CharacterDetail } from "@/components/CharacterDetail";
-import { ALL_CHARACTERS } from "@/lib/heroes";
+import { ALL_CHARACTERS, CHARACTER_BY_ID } from "@/lib/heroes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const character = ALL_CHARACTERS.find((c) => c.id === id);
+  const character = CHARACTER_BY_ID.get(id);
   if (character === undefined) {
     return { title: "Character not found" };
   }
@@ -31,7 +31,7 @@ export default async function CharacterPage({
   params: Promise<{ id: string }>;
 }): Promise<ReactElement> {
   const { id } = await params;
-  const character = ALL_CHARACTERS.find((c) => c.id === id);
+  const character = CHARACTER_BY_ID.get(id);
   if (character === undefined) {
     notFound();
   }

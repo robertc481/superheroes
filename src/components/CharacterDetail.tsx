@@ -104,8 +104,8 @@ export function CharacterDetail({ character }: { character: Character }): ReactE
           Aliases
         </h2>
         <ul className="mt-2 list-inside list-disc font-body text-hero-primary dark:text-hero-light">
-          {character.aliases.map((a) => (
-            <li key={a}>{a}</li>
+          {character.aliases.map((a, index) => (
+            <li key={`${character.id}-alias-${index}`}>{a}</li>
           ))}
         </ul>
       </section>

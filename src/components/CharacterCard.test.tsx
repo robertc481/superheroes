@@ -4,7 +4,7 @@
 import { CharacterCard } from "@/components/CharacterCard";
 import type { Character } from "@/types";
 import { render, screen } from "@testing-library/react";
-import type { ReactElement, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ReactElement, ReactNode } from "react";
 
 const baseCharacter: Character = {
   id: "batman",
@@ -45,11 +45,16 @@ jest.mock("next/link", () => ({
   default({
     children,
     href,
+    ...anchorProps
   }: {
     children: ReactNode;
     href: string;
-  }): ReactElement {
-    return <a href={href}>{children}</a>;
+  } & AnchorHTMLAttributes<HTMLAnchorElement>): ReactElement {
+    return (
+      <a href={href} {...anchorProps}>
+        {children}
+      </a>
+    );
   },
 }));
 
@@ -89,5 +94,17 @@ describe("CharacterCard", () => {
     const c: Character = { ...baseCharacter, weakness: undefined };
     render(<CharacterCard character={c} />);
     expect(screen.getByText(/Weakness:/)).toHaveTextContent("Unknown");
+  });
+
+  it("exposes a detail link whose accessible name comes from the card title and href is correct", () => {
+    render(<CharacterCard character={baseCharacter} />);
+    const link = screen.getByRole("link", { name: "Batman" }) as HTMLAnchorElement;
+    expect(link.getAttribute("href")).toBe("/character/batman");
+  });
+
+  it("renders power stat labels and values from PowerStatsDisplay", () => {
+    render(<CharacterCard character={baseCharacter} />);
+    expect(screen.getByText("Strength")).toBeInTheDocument();
+    expect(screen.getByText("72")).toBeInTheDocument();
   });
 });

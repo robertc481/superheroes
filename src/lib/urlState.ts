@@ -1,13 +1,15 @@
-import type { CharacterType, FilterState, PowerType, Universe } from "@/types";
+import {
+  CHARACTER_TYPES,
+  POWER_TYPES,
+  UNIVERSES,
+  type CharacterType,
+  type FilterState,
+  type PowerType,
+  type Universe,
+} from "@/types";
 
-const POWER_SET: ReadonlySet<string> = new Set<string>([
-  "Strength",
-  "Speed",
-  "Intelligence",
-  "Magic",
-]);
-
-const UNIVERSE_SET: ReadonlySet<string> = new Set<string>(["Marvel", "DC"]);
+const POWER_SET: ReadonlySet<string> = new Set<string>(POWER_TYPES);
+const UNIVERSE_SET: ReadonlySet<string> = new Set<string>(UNIVERSES);
 
 function isPowerTypeString(value: string): value is PowerType {
   return POWER_SET.has(value);
@@ -18,7 +20,7 @@ function isUniverseString(value: string): value is Universe {
 }
 
 function isCharacterTypeString(value: string): value is CharacterType {
-  return value === "hero" || value === "villain";
+  return (CHARACTER_TYPES as readonly string[]).includes(value);
 }
 
 function normalizeParamTokens(value: string | string[] | undefined): string[] {
@@ -101,7 +103,12 @@ export function recordFromReadonlySearchParams(sp: {
   getAll: (name: string) => string[];
 }): Record<string, string | string[] | undefined> {
   const out: Record<string, string | string[] | undefined> = {};
+  const seen = new Set<string>();
   for (const key of sp.keys()) {
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
     const all = sp.getAll(key);
     if (all.length === 0) {
       continue;

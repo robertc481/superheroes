@@ -30,6 +30,7 @@ export function PowerStatsDisplay({ stats }: { stats: PowerStats }): ReactElemen
               <div
                 className="h-full rounded-full bg-hero-secondary transition-all dark:bg-hero-accent"
                 style={{ width: `${value}%` }}
+                aria-hidden="true"
               />
             </div>
           </div>

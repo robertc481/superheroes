@@ -10,7 +10,6 @@ Prerequisites: **Node.js 20+** (matches `@types/node` in the project).
 
 ```bash
 git clone <your-repo-url>
-cd livecoding
 npm install
 npm run dev
 ```
@@ -94,4 +93,4 @@ npm run dev
 ## Config notes
 
 - **Jest:** `jest.config.mjs` uses `next/jest`.
-- **Tailwind v4:** `tailwind.config.mjs` is pulled in via `@config` in `src/app/globals.css` so `darkMode: 'class'` and design tokens stay consistent.
+- **Tailwind v4:** Design tokens and `dark` variant are defined in `src/app/globals.css` via `@theme` and `@custom-variant dark` (class-based dark mode with **next-themes**). There is no separate `tailwind.config` file.

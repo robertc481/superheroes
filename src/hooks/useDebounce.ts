@@ -15,9 +15,10 @@ export function useDebounce<A extends unknown[]>(
     return (): void => {
       if (timerRef.current !== undefined) {
         clearTimeout(timerRef.current);
+        timerRef.current = undefined;
       }
     };
-  }, []);
+  }, [delayMs]);
 
   return useCallback(
     (...args: A) => {

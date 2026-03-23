@@ -1,5 +1,9 @@
 "use client";
 
+import { FilterSheet } from "@/components/filters/FilterSheet";
+import { PowerFilter } from "@/components/filters/PowerFilter";
+import { TypeFilter } from "@/components/filters/TypeFilter";
+import { UniverseFilter } from "@/components/filters/UniverseFilter";
 import {
   buildQueryString,
   parseFilterState,
@@ -7,21 +11,7 @@ import {
 } from "@/lib/urlState";
 import type { CharacterType, FilterState, PowerType, Universe } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactElement } from "react";
-
-function handleEnterAsClick(e: KeyboardEvent<HTMLInputElement>): void {
-  if (e.key === "Enter") {
-    e.currentTarget.click();
-  }
-}
-
-const POWER_OPTIONS: PowerType[] = [
-  "Strength",
-  "Speed",
-  "Intelligence",
-  "Magic",
-];
-const UNIVERSE_OPTIONS: Universe[] = ["Marvel", "DC"];
+import { useCallback, useEffect, useState, type ReactElement } from "react";
 
 export function FilterSidebar({
   currentFilters,
@@ -33,7 +23,13 @@ export function FilterSidebar({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const [clientNavReady, setClientNavReady] = useState(false);
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      setClientNavReady(true);
+    });
+  }, []);
 
   const pushFilters = useCallback(
     (next: FilterState, search: string): void => {
@@ -51,72 +47,73 @@ export function FilterSidebar({
     return searchParams.get("search") ?? "";
   }, [searchParams]);
 
-  const effectiveFilters: FilterState = readFiltersFromUrl();
+  const effectiveFilters: FilterState = clientNavReady
+    ? readFiltersFromUrl()
+    : currentFilters;
 
   const togglePower = useCallback(
     (power: PowerType): void => {
-      const base = readFiltersFromUrl();
+      const base = clientNavReady ? readFiltersFromUrl() : currentFilters;
+      const search = clientNavReady ? readSearchFromUrl() : currentSearch;
       const nextPowers = base.powers.includes(power)
         ? base.powers.filter((p) => p !== power)
         : [...base.powers, power];
-      pushFilters(
-        { ...base, powers: nextPowers },
-        readSearchFromUrl(),
-      );
+      pushFilters({ ...base, powers: nextPowers }, search);
     },
-    [pushFilters, readFiltersFromUrl, readSearchFromUrl],
+    [
+      clientNavReady,
+      currentFilters,
+      currentSearch,
+      pushFilters,
+      readFiltersFromUrl,
+      readSearchFromUrl,
+    ],
   );
 
   const toggleUniverse = useCallback(
     (universe: Universe): void => {
-      const base = readFiltersFromUrl();
+      const base = clientNavReady ? readFiltersFromUrl() : currentFilters;
+      const search = clientNavReady ? readSearchFromUrl() : currentSearch;
       const nextUniverses = base.universes.includes(universe)
         ? base.universes.filter((u) => u !== universe)
         : [...base.universes, universe];
-      pushFilters(
-        { ...base, universes: nextUniverses },
-        readSearchFromUrl(),
-      );
+      pushFilters({ ...base, universes: nextUniverses }, search);
     },
-    [pushFilters, readFiltersFromUrl, readSearchFromUrl],
+    [
+      clientNavReady,
+      currentFilters,
+      currentSearch,
+      pushFilters,
+      readFiltersFromUrl,
+      readSearchFromUrl,
+    ],
   );
 
   const setType = useCallback(
     (type: CharacterType | null): void => {
-      const base = readFiltersFromUrl();
-      pushFilters({ ...base, type }, readSearchFromUrl());
+      const base = clientNavReady ? readFiltersFromUrl() : currentFilters;
+      const search = clientNavReady ? readSearchFromUrl() : currentSearch;
+      pushFilters({ ...base, type }, search);
     },
-    [pushFilters, readFiltersFromUrl, readSearchFromUrl],
+    [
+      clientNavReady,
+      currentFilters,
+      currentSearch,
+      pushFilters,
+      readFiltersFromUrl,
+      readSearchFromUrl,
+    ],
   );
 
   const clearAll = useCallback((): void => {
-    router.push("/", { scroll: false });
+    const search = clientNavReady ? readSearchFromUrl() : currentSearch;
+    const qs = buildQueryString(
+      { powers: [], universes: [], type: null },
+      search,
+    );
+    router.push(`/${qs}`, { scroll: false });
     setMobileOpen(false);
-  }, [router]);
-
-  useEffect(() => {
-    if (!mobileOpen) return;
-
-    const onKeyDown = (e: KeyboardEvent): void => {
-      if (e.key === "Escape") {
-        setMobileOpen(false);
-      }
-    };
-    document.addEventListener("keydown", onKeyDown);
-
-    const prev = document.activeElement as HTMLElement | null;
-    sheetRef.current?.focus();
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      prev?.focus();
-    };
-  }, [mobileOpen]);
-
-  // Suppress unused-var lint: server props serve as the SSR-rendered initial
-  // state; effectiveFilters from useSearchParams takes over on the client.
-  void currentFilters;
-  void currentSearch;
+  }, [router, clientNavReady, readSearchFromUrl, currentSearch]);
 
   const sidebarInner = (
     <div className="flex h-full flex-col gap-6 p-4 lg:p-0">
@@ -134,94 +131,9 @@ export function FilterSidebar({
         </button>
       </div>
 
-      <fieldset
-        className="space-y-2"
-        aria-label="Filter by power type"
-      >
-        <legend className="font-heading text-sm font-semibold text-hero-primary dark:text-hero-light">
-          Power type
-        </legend>
-        {POWER_OPTIONS.map((power) => (
-          <label
-            key={power}
-            className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light"
-          >
-            <input
-              type="checkbox"
-              checked={effectiveFilters.powers.includes(power)}
-              onChange={(): void => {
-                togglePower(power);
-              }}
-              onKeyDown={handleEnterAsClick}
-            />
-            {power}
-          </label>
-        ))}
-      </fieldset>
-
-      <fieldset
-        className="space-y-2"
-        aria-label="Filter by universe"
-      >
-        <legend className="font-heading text-sm font-semibold text-hero-primary dark:text-hero-light">
-          Universe
-        </legend>
-        {UNIVERSE_OPTIONS.map((universe) => (
-          <label
-            key={universe}
-            className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light"
-          >
-            <input
-              type="checkbox"
-              checked={effectiveFilters.universes.includes(universe)}
-              onChange={(): void => {
-                toggleUniverse(universe);
-              }}
-              onKeyDown={handleEnterAsClick}
-            />
-            {universe}
-          </label>
-        ))}
-      </fieldset>
-
-      <fieldset
-        className="space-y-2"
-        aria-label="Filter by character type"
-      >
-        <legend className="font-heading text-sm font-semibold text-hero-primary dark:text-hero-light">
-          Character type
-        </legend>
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light">
-          <input
-            type="radio"
-            name="character-type"
-            checked={effectiveFilters.type === null}
-            onChange={(): void => setType(null)}
-            onKeyDown={handleEnterAsClick}
-          />
-          All
-        </label>
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light">
-          <input
-            type="radio"
-            name="character-type"
-            checked={effectiveFilters.type === "hero"}
-            onChange={(): void => setType("hero")}
-            onKeyDown={handleEnterAsClick}
-          />
-          Hero
-        </label>
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light">
-          <input
-            type="radio"
-            name="character-type"
-            checked={effectiveFilters.type === "villain"}
-            onChange={(): void => setType("villain")}
-            onKeyDown={handleEnterAsClick}
-          />
-          Villain
-        </label>
-      </fieldset>
+      <PowerFilter filters={effectiveFilters} onTogglePower={togglePower} />
+      <UniverseFilter filters={effectiveFilters} onToggleUniverse={toggleUniverse} />
+      <TypeFilter filters={effectiveFilters} onSetType={setType} />
 
       <button
         type="button"
@@ -256,27 +168,9 @@ export function FilterSidebar({
         {sidebarInner}
       </aside>
 
-      {mobileOpen ? (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/50"
-            aria-label="Close filter overlay"
-            onClick={(): void => setMobileOpen(false)}
-          />
-          <div
-            ref={sheetRef}
-            id="filter-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Character filters"
-            tabIndex={-1}
-            className="absolute left-0 top-0 flex h-full w-[min(100%,320px)] flex-col bg-white shadow-xl outline-none dark:bg-hero-dark"
-          >
-            {sidebarInner}
-          </div>
-        </div>
-      ) : null}
+      <FilterSheet open={mobileOpen} onClose={(): void => setMobileOpen(false)}>
+        {sidebarInner}
+      </FilterSheet>
     </>
   );
 }

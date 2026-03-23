@@ -1,7 +1,7 @@
 "use client";
 
 import { useStoreHydration } from "@/hooks/useStoreHydration";
-import { useFavoritesStore } from "@/store/favorites";
+import { isFavoriteId, useFavoritesStore } from "@/store/favorites";
 import type { ReactElement } from "react";
 
 export function FavoriteButton({
@@ -11,7 +11,8 @@ export function FavoriteButton({
   characterId: string;
   characterName: string;
 }): ReactElement {
-  const isFavorite: boolean = useFavoritesStore((s) => s.isFavorite(characterId));
+  const favoriteIds = useFavoritesStore((s) => s.favoriteIds);
+  const isFavorite: boolean = isFavoriteId(favoriteIds, characterId);
   const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
   const hydrated = useStoreHydration();
 
@@ -31,7 +32,6 @@ export function FavoriteButton({
         toggleFavorite(characterId);
       }}
     >
-      <span className="sr-only">Favorite</span>
       <span aria-hidden className="text-lg leading-none">
         {pressed ? "♥" : "♡"}
       </span>

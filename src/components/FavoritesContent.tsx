@@ -14,8 +14,10 @@ export function FavoritesContent({
 }: {
   allCharacters: Character[];
 }): ReactElement {
-  const favoriteIds: string[] = useFavoritesStore((s) => s.favoriteIds);
+  const favoriteIds = useFavoritesStore((s) => s.favoriteIds);
   const hydrated = useStoreHydration();
+
+  const skeletonCount: number = Math.min(Math.max(allCharacters.length, 1), 6);
 
   if (!hydrated) {
     return (
@@ -23,15 +25,11 @@ export function FavoritesContent({
         className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
         role="list"
       >
-        <li className="list-none">
-          <SkeletonCard />
-        </li>
-        <li className="list-none">
-          <SkeletonCard />
-        </li>
-        <li className="list-none">
-          <SkeletonCard />
-        </li>
+        {Array.from({ length: skeletonCount }, (_, i) => (
+          <li key={i} className="list-none">
+            <SkeletonCard />
+          </li>
+        ))}
       </ul>
     );
   }

@@ -27,7 +27,16 @@ export default async function HomePage({
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr] lg:gap-10">
-      <Suspense>
+      <Suspense
+        fallback={
+          <div
+            className="hidden lg:block lg:w-[280px] lg:shrink-0"
+            aria-hidden
+          >
+            <div className="h-64 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
+          </div>
+        }
+      >
         <FilterSidebar
           currentFilters={filterState}
           currentSearch={searchQuery}

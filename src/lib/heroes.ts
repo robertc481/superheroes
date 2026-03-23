@@ -1,14 +1,17 @@
 import raw from "@/data/characters.json";
+import { charactersFileSchema } from "@/lib/charactersSchema";
 import type { Character, CharacterType, FilterState, PowerType, Universe } from "@/types";
 
-// justified: bundled `characters.json` matches `Character` unions and field shape.
-export const ALL_CHARACTERS: Character[] = raw.items as Character[];
-
-for (const c of ALL_CHARACTERS) {
-  if (typeof c.id !== "string" || c.id.length === 0) {
-    throw new Error("Character data error: every character must have a non-empty id");
-  }
+const parsed = charactersFileSchema.safeParse(raw);
+if (!parsed.success) {
+  throw new Error(`Character data failed validation: ${parsed.error.message}`);
 }
+
+export const ALL_CHARACTERS: Character[] = parsed.data.items;
+
+export const CHARACTER_BY_ID: ReadonlyMap<string, Character> = new Map(
+  ALL_CHARACTERS.map((c) => [c.id, c]),
+);
 
 function characterHasAllPowers(character: Character, selected: PowerType[]): boolean {
   return selected.every((p) => character.powers.includes(p));
