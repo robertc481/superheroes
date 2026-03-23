@@ -10,11 +10,13 @@ export default function GlobalError({
   reset: () => void;
 }): ReactElement {
   useEffect(() => {
+    // TODO: replace with error reporting service (e.g. Sentry) in production
     console.error(error);
   }, [error]);
 
   return (
     <html lang="en">
+      {/* Hardcoded colours mirror globals.css --color-hero-* tokens; this page cannot rely on Tailwind being loaded. */}
       <body className="flex min-h-screen items-center justify-center bg-[#e0e7ef] p-6 text-[#1e3a5f] antialiased dark:bg-[#0d1b2a] dark:text-[#e0e7ef]">
         <div className="mx-auto max-w-lg rounded-xl border border-[#c62828]/40 bg-white p-8 text-center shadow-lg dark:bg-[#0d1b2a]">
           <h1 className="text-xl font-bold">We couldn&apos;t load this view</h1>

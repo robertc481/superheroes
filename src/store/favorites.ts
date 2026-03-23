@@ -17,8 +17,7 @@ export const useFavoritesStore = create<FavoritesState>()(
       toggleFavorite: (id: string): void => {
         set((state) => {
           const current = state.favoriteIds;
-          const idSet = new Set(current);
-          if (idSet.has(id)) {
+          if (current.includes(id)) {
             return { favoriteIds: current.filter((fid) => fid !== id) };
           }
           return { favoriteIds: [...current, id] };

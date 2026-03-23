@@ -67,15 +67,3 @@ export function getVisibleHeroes(
 ): Character[] {
   return searchHeroes(filterHeroes(characters, filters), query);
 }
-
-/** Pure helper: roster slice for favorites page (IDs from client store). */
-export function filterCharactersByFavoriteIds(
-  characters: Character[],
-  favoriteIds: readonly string[],
-): Character[] {
-  if (favoriteIds.length === 0) {
-    return [];
-  }
-  const idSet = new Set<string>(favoriteIds);
-  return characters.filter((c) => idSet.has(c.id));
-}

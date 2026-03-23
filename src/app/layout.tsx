@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { Providers } from "@/components/providers/Providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>): ReactElement {
   return (
     <html lang="en" className={`${inter.variable} h-full`} suppressHydrationWarning>

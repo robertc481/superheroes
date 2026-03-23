@@ -11,7 +11,7 @@ import {
 } from "@/lib/urlState";
 import type { CharacterType, FilterState, PowerType, Universe } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState, type ReactElement } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 
 export function FilterSidebar({
   currentFilters,
@@ -26,15 +26,13 @@ export function FilterSidebar({
   const [clientNavReady, setClientNavReady] = useState(false);
 
   useEffect(() => {
-    queueMicrotask(() => {
-      setClientNavReady(true);
-    });
+    setClientNavReady(true);
   }, []);
 
-  const pushFilters = useCallback(
+  const replaceFilters = useCallback(
     (next: FilterState, search: string): void => {
       const qs = buildQueryString(next, search);
-      router.push(`/${qs}`, { scroll: false });
+      router.replace(`/${qs}`, { scroll: false });
     },
     [router],
   );
@@ -47,9 +45,10 @@ export function FilterSidebar({
     return searchParams.get("search") ?? "";
   }, [searchParams]);
 
-  const effectiveFilters: FilterState = clientNavReady
-    ? readFiltersFromUrl()
-    : currentFilters;
+  const effectiveFilters: FilterState = useMemo(
+    () => (clientNavReady ? readFiltersFromUrl() : currentFilters),
+    [clientNavReady, readFiltersFromUrl, currentFilters],
+  );
 
   const togglePower = useCallback(
     (power: PowerType): void => {
@@ -58,13 +57,13 @@ export function FilterSidebar({
       const nextPowers = base.powers.includes(power)
         ? base.powers.filter((p) => p !== power)
         : [...base.powers, power];
-      pushFilters({ ...base, powers: nextPowers }, search);
+      replaceFilters({ ...base, powers: nextPowers }, search);
     },
     [
       clientNavReady,
       currentFilters,
       currentSearch,
-      pushFilters,
+      replaceFilters,
       readFiltersFromUrl,
       readSearchFromUrl,
     ],
@@ -77,13 +76,13 @@ export function FilterSidebar({
       const nextUniverses = base.universes.includes(universe)
         ? base.universes.filter((u) => u !== universe)
         : [...base.universes, universe];
-      pushFilters({ ...base, universes: nextUniverses }, search);
+      replaceFilters({ ...base, universes: nextUniverses }, search);
     },
     [
       clientNavReady,
       currentFilters,
       currentSearch,
-      pushFilters,
+      replaceFilters,
       readFiltersFromUrl,
       readSearchFromUrl,
     ],
@@ -93,13 +92,13 @@ export function FilterSidebar({
     (type: CharacterType | null): void => {
       const base = clientNavReady ? readFiltersFromUrl() : currentFilters;
       const search = clientNavReady ? readSearchFromUrl() : currentSearch;
-      pushFilters({ ...base, type }, search);
+      replaceFilters({ ...base, type }, search);
     },
     [
       clientNavReady,
       currentFilters,
       currentSearch,
-      pushFilters,
+      replaceFilters,
       readFiltersFromUrl,
       readSearchFromUrl,
     ],
@@ -111,9 +110,11 @@ export function FilterSidebar({
       { powers: [], universes: [], type: null },
       search,
     );
-    router.push(`/${qs}`, { scroll: false });
+    router.replace(`/${qs}`, { scroll: false });
     setMobileOpen(false);
   }, [router, clientNavReady, readSearchFromUrl, currentSearch]);
+
+  const closeSheet = useCallback((): void => setMobileOpen(false), []);
 
   const sidebarInner = (
     <div className="flex h-full flex-col gap-6 p-4 lg:p-0">
@@ -124,7 +125,7 @@ export function FilterSidebar({
         <button
           type="button"
           className="text-sm font-medium text-hero-secondary"
-          onClick={(): void => setMobileOpen(false)}
+          onClick={closeSheet}
           aria-label="Close filters"
         >
           Close
@@ -168,7 +169,7 @@ export function FilterSidebar({
         {sidebarInner}
       </aside>
 
-      <FilterSheet open={mobileOpen} onClose={(): void => setMobileOpen(false)}>
+      <FilterSheet open={mobileOpen} onClose={closeSheet}>
         {sidebarInner}
       </FilterSheet>
     </>

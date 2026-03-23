@@ -10,6 +10,7 @@ export default function ErrorBoundary({
   reset: () => void;
 }): ReactElement {
   useEffect(() => {
+    // TODO: replace with error reporting service (e.g. Sentry) in production
     console.error(error);
   }, [error]);
 

@@ -77,11 +77,11 @@ jest.mock("next/image", () => ({
 }));
 
 describe("CharacterCard", () => {
-  it("renders character name and image with non-empty alt text", () => {
+  it("renders character name and image with descriptive alt text", () => {
     render(<CharacterCard character={baseCharacter} />);
     expect(screen.getByText("Batman")).toBeInTheDocument();
-    const img = screen.getByRole("img", { name: "Batman" });
-    expect(img).toHaveAttribute("alt", "Batman");
+    const img = screen.getByRole("img", { name: "Portrait of Batman" });
+    expect(img).toHaveAttribute("alt", "Portrait of Batman");
     expect(img.getAttribute("alt")?.length).toBeGreaterThan(0);
   });
 
@@ -106,5 +106,17 @@ describe("CharacterCard", () => {
     render(<CharacterCard character={baseCharacter} />);
     expect(screen.getByText("Strength")).toBeInTheDocument();
     expect(screen.getByText("72")).toBeInTheDocument();
+  });
+
+  it("passes imagePriority to next/image", () => {
+    render(<CharacterCard character={baseCharacter} imagePriority />);
+    const img = screen.getByRole("img", { name: "Portrait of Batman" });
+    expect(img).toHaveAttribute("data-priority", "true");
+  });
+
+  it("defaults imagePriority to false", () => {
+    render(<CharacterCard character={baseCharacter} />);
+    const img = screen.getByRole("img", { name: "Portrait of Batman" });
+    expect(img).toHaveAttribute("data-priority", "false");
   });
 });

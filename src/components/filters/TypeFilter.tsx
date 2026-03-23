@@ -1,6 +1,9 @@
-import { handleEnterAsClick } from "@/lib/keyboard";
-import type { CharacterType, FilterState } from "@/types";
+import { CHARACTER_TYPES, type CharacterType, type FilterState } from "@/types";
 import type { ReactElement } from "react";
+
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 export function TypeFilter({
   filters,
@@ -20,30 +23,23 @@ export function TypeFilter({
           name="character-type"
           checked={filters.type === null}
           onChange={(): void => onSetType(null)}
-          onKeyDown={handleEnterAsClick}
         />
         All
       </label>
-      <label className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light">
-        <input
-          type="radio"
-          name="character-type"
-          checked={filters.type === "hero"}
-          onChange={(): void => onSetType("hero")}
-          onKeyDown={handleEnterAsClick}
-        />
-        Hero
-      </label>
-      <label className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light">
-        <input
-          type="radio"
-          name="character-type"
-          checked={filters.type === "villain"}
-          onChange={(): void => onSetType("villain")}
-          onKeyDown={handleEnterAsClick}
-        />
-        Villain
-      </label>
+      {CHARACTER_TYPES.map((t) => (
+        <label
+          key={t}
+          className="flex cursor-pointer items-center gap-2 text-sm text-hero-primary dark:text-hero-light"
+        >
+          <input
+            type="radio"
+            name="character-type"
+            checked={filters.type === t}
+            onChange={(): void => onSetType(t)}
+          />
+          {capitalize(t)}
+        </label>
+      ))}
     </fieldset>
   );
 }

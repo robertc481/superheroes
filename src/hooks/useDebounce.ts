@@ -6,10 +6,7 @@ export function useDebounce<A extends unknown[]>(
 ): (...args: A) => void {
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const cbRef = useRef(callback);
-
-  useEffect(() => {
-    cbRef.current = callback;
-  }, [callback]);
+  cbRef.current = callback;
 
   useEffect(() => {
     return (): void => {

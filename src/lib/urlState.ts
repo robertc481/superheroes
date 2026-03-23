@@ -10,6 +10,7 @@ import {
 
 const POWER_SET: ReadonlySet<string> = new Set<string>(POWER_TYPES);
 const UNIVERSE_SET: ReadonlySet<string> = new Set<string>(UNIVERSES);
+const CHARACTER_TYPE_SET: ReadonlySet<string> = new Set<string>(CHARACTER_TYPES);
 
 function isPowerTypeString(value: string): value is PowerType {
   return POWER_SET.has(value);
@@ -20,7 +21,7 @@ function isUniverseString(value: string): value is Universe {
 }
 
 function isCharacterTypeString(value: string): value is CharacterType {
-  return (CHARACTER_TYPES as readonly string[]).includes(value);
+  return CHARACTER_TYPE_SET.has(value);
 }
 
 function normalizeParamTokens(value: string | string[] | undefined): string[] {

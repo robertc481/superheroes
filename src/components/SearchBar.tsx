@@ -31,8 +31,7 @@ export function SearchBar({ initialQuery }: { initialQuery: string }): ReactElem
         recordFromReadonlySearchParams(searchParams),
       );
       const qs = buildQueryString(filters, query);
-      const path = pathname === "/" ? "/" : pathname;
-      router.push(`${path}${qs}`, { scroll: false });
+      router.push(`${pathname}${qs}`, { scroll: false });
     },
     [pathname, router, searchParams],
   );

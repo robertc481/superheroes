@@ -27,7 +27,7 @@ export function CharacterCard({
           <div className="relative aspect-[3/4] w-full bg-hero-light/50 dark:bg-hero-primary/20">
             <Image
               src={character.image}
-              alt={character.name}
+              alt={`Portrait of ${character.name}`}
               fill
               className="object-cover object-top"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

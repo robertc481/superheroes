@@ -7,9 +7,7 @@ export function useStoreHydration(): boolean {
   useEffect(() => {
     const persist = useFavoritesStore.persist;
     if (persist.hasHydrated()) {
-      queueMicrotask(() => {
-        setHydrated(true);
-      });
+      setHydrated(true);
       return;
     }
     return persist.onFinishHydration(() => {

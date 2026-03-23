@@ -1,7 +1,9 @@
 "use client";
 
-import type { MouseEvent, ReactElement, ReactNode } from "react";
-import { useCallback, useEffect, useRef } from "react";
+import type { ReactElement, ReactNode } from "react";
+import { useEffect, useRef } from "react";
+
+const LG_BREAKPOINT = "(min-width: 1024px)";
 
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
   const nodes = container.querySelectorAll<HTMLElement>(
@@ -20,9 +22,17 @@ export function FilterSheet({
   children: ReactNode;
 }): ReactElement | null {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
+
+    const mql = window.matchMedia(LG_BREAKPOINT);
+    if (mql.matches) {
+      onCloseRef.current();
+      return;
+    }
 
     const main = document.getElementById("main-content");
     if (main !== null) {
@@ -31,7 +41,7 @@ export function FilterSheet({
 
     const onKeyDown = (e: KeyboardEvent): void => {
       if (e.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== "Tab" || sheetRef.current === null) {
@@ -55,7 +65,14 @@ export function FilterSheet({
       }
     };
 
+    const onViewportChange = (): void => {
+      if (mql.matches) {
+        onCloseRef.current();
+      }
+    };
+
     document.addEventListener("keydown", onKeyDown);
+    mql.addEventListener("change", onViewportChange);
 
     const prev = document.activeElement as HTMLElement | null;
     const focusables = sheetRef.current ? getFocusableElements(sheetRef.current) : [];
@@ -63,16 +80,13 @@ export function FilterSheet({
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
+      mql.removeEventListener("change", onViewportChange);
       if (main !== null) {
         main.inert = false;
       }
       prev?.focus();
     };
-  }, [open, onClose]);
-
-  const stopPropagation = useCallback((e: MouseEvent): void => {
-    e.stopPropagation();
-  }, []);
+  }, [open]);
 
   if (!open) {
     return null;
@@ -83,7 +97,7 @@ export function FilterSheet({
       <div
         className="absolute inset-0 bg-black/50"
         aria-hidden="true"
-        onClick={onClose}
+        onClick={(): void => onCloseRef.current()}
       />
       <div
         ref={sheetRef}
@@ -93,7 +107,6 @@ export function FilterSheet({
         aria-label="Character filters"
         tabIndex={-1}
         className="absolute left-0 top-0 flex h-full w-[min(100%,320px)] flex-col bg-white shadow-xl outline-none dark:bg-hero-dark"
-        onClick={stopPropagation}
       >
         {children}
       </div>

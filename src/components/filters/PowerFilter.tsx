@@ -1,4 +1,3 @@
-import { handleEnterAsClick } from "@/lib/keyboard";
 import { POWER_TYPES, type FilterState, type PowerType } from "@/types";
 import type { ReactElement } from "react";
 
@@ -25,7 +24,6 @@ export function PowerFilter({
             onChange={(): void => {
               onTogglePower(power);
             }}
-            onKeyDown={handleEnterAsClick}
           />
           {power}
         </label>

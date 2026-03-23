@@ -38,6 +38,24 @@ describe("parseFilterState", () => {
   });
 });
 
+describe("parseSearchQuery", () => {
+  it("returns empty string when search param is undefined", () => {
+    expect(parseSearchQuery({})).toBe("");
+  });
+
+  it("returns the string when present", () => {
+    expect(parseSearchQuery({ search: "bat" })).toBe("bat");
+  });
+
+  it("returns last element when search param is an array", () => {
+    expect(parseSearchQuery({ search: ["a", "b"] })).toBe("b");
+  });
+
+  it("returns empty string when search param is an empty array", () => {
+    expect(parseSearchQuery({ search: [] })).toBe("");
+  });
+});
+
 describe("buildQueryString", () => {
   it("round-trips with parseFilterState", () => {
     const filters: FilterState = {
@@ -59,6 +77,14 @@ describe("buildQueryString", () => {
     });
     expect(parseSearchQuery(normalized)).toBe("batman");
   });
+
+  it("returns empty string when all filters are empty and search is blank", () => {
+    expect(buildQueryString({ powers: [], universes: [], type: null }, "")).toBe("");
+  });
+
+  it("returns empty string when search is only whitespace", () => {
+    expect(buildQueryString({ powers: [], universes: [], type: null }, "   ")).toBe("");
+  });
 });
 
 describe("recordFromReadonlySearchParams", () => {
@@ -69,5 +95,11 @@ describe("recordFromReadonlySearchParams", () => {
     const rec = recordFromReadonlySearchParams(sp);
     expect(Object.keys(rec)).toEqual(["a"]);
     expect(rec["a"]).toEqual(["1", "2"]);
+  });
+
+  it("returns single string (not array) for single-value keys", () => {
+    const sp = new URLSearchParams("foo=bar");
+    const rec = recordFromReadonlySearchParams(sp);
+    expect(rec["foo"]).toBe("bar");
   });
 });

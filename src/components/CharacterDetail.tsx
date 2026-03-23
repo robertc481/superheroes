@@ -28,7 +28,7 @@ export function CharacterDetail({ character }: { character: Character }): ReactE
       <div className="relative aspect-[4/3] w-full max-w-xl overflow-hidden rounded-xl bg-hero-light/50 dark:bg-hero-primary/20">
         <Image
           src={character.image}
-          alt={character.name}
+          alt={`Portrait of ${character.name}`}
           fill
           className="object-cover object-top"
           sizes="(max-width: 1024px) 100vw, 640px"
@@ -104,8 +104,8 @@ export function CharacterDetail({ character }: { character: Character }): ReactE
           Aliases
         </h2>
         <ul className="mt-2 list-inside list-disc font-body text-hero-primary dark:text-hero-light">
-          {character.aliases.map((a, index) => (
-            <li key={`${character.id}-alias-${index}`}>{a}</li>
+          {character.aliases.map((a) => (
+            <li key={a}>{a}</li>
           ))}
         </ul>
       </section>

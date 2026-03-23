@@ -16,9 +16,8 @@ describe("FavoriteButton", () => {
     useFavoritesStore.setState({ favoriteIds: [] });
   });
 
-  it("calls toggleFavorite with character id on click", async () => {
+  it("adds character id to favorites on click", async () => {
     const user = userEvent.setup();
-    const toggle = jest.spyOn(useFavoritesStore.getState(), "toggleFavorite");
 
     render(<FavoriteButton characterId="batman" characterName="Batman" />);
 
@@ -26,6 +25,19 @@ describe("FavoriteButton", () => {
       screen.getByRole("button", { name: /Add Batman to favorites/i }),
     );
 
-    expect(toggle).toHaveBeenCalledWith("batman");
+    expect(useFavoritesStore.getState().favoriteIds).toContain("batman");
+  });
+
+  it("removes character id from favorites on second click", async () => {
+    const user = userEvent.setup();
+    useFavoritesStore.setState({ favoriteIds: ["batman"] });
+
+    render(<FavoriteButton characterId="batman" characterName="Batman" />);
+
+    await user.click(
+      screen.getByRole("button", { name: /Remove Batman from favorites/i }),
+    );
+
+    expect(useFavoritesStore.getState().favoriteIds).not.toContain("batman");
   });
 });

@@ -1,4 +1,3 @@
-import { handleEnterAsClick } from "@/lib/keyboard";
 import { UNIVERSES, type FilterState, type Universe } from "@/types";
 import type { ReactElement } from "react";
 
@@ -25,7 +24,6 @@ export function UniverseFilter({
             onChange={(): void => {
               onToggleUniverse(universe);
             }}
-            onKeyDown={handleEnterAsClick}
           />
           {universe}
         </label>

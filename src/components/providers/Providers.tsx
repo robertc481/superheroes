@@ -6,7 +6,12 @@ import { useEffect, type ReactNode, type ReactElement } from "react";
 
 export function Providers({ children }: { children: ReactNode }): ReactElement {
   useEffect(() => {
-    void useFavoritesStore.persist.rehydrate();
+    const result = useFavoritesStore.persist.rehydrate();
+    if (result instanceof Promise) {
+      result.catch(() => {
+        // TODO: wire to error reporting service in production
+      });
+    }
   }, []);
 
   return (

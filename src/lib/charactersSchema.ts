@@ -15,7 +15,7 @@ export const characterSchema = z.object({
   type: characterTypeEnum,
   weakness: z.string().optional(),
   universe: universeEnum,
-  aliases: z.array(z.string()),
+  aliases: z.array(z.string().min(1)),
   powers: z.array(powerEnum),
   powerStats: z.object({
     strength: statValue,

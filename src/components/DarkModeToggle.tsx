@@ -40,9 +40,7 @@ export function DarkModeToggle(): ReactElement {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    queueMicrotask(() => {
-      setMounted(true);
-    });
+    setMounted(true);
   }, []);
 
   if (!mounted) {

@@ -1,6 +1,6 @@
+import { filterCharactersByFavoriteIds } from "@/lib/filterUtils";
 import {
   ALL_CHARACTERS,
-  filterCharactersByFavoriteIds,
   filterHeroes,
   getVisibleHeroes,
   searchHeroes,

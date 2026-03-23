@@ -4,7 +4,7 @@ import { CharacterGrid } from "@/components/CharacterGrid";
 import { EmptyState } from "@/components/EmptyState";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { useStoreHydration } from "@/hooks/useStoreHydration";
-import { filterCharactersByFavoriteIds } from "@/lib/heroes";
+import { filterCharactersByFavoriteIds } from "@/lib/filterUtils";
 import { useFavoritesStore } from "@/store/favorites";
 import type { Character } from "@/types";
 import type { ReactElement } from "react";
