@@ -1,0 +1,78 @@
+import raw from "@/data/characters.json";
+import type { Character, CharacterType, FilterState, PowerType, Universe } from "@/types";
+
+// justified: bundled `characters.json` matches `Character` unions and field shape.
+export const ALL_CHARACTERS: Character[] = raw.items as Character[];
+
+for (const c of ALL_CHARACTERS) {
+  if (typeof c.id !== "string" || c.id.length === 0) {
+    throw new Error("Character data error: every character must have a non-empty id");
+  }
+}
+
+function characterHasAllPowers(character: Character, selected: PowerType[]): boolean {
+  return selected.every((p) => character.powers.includes(p));
+}
+
+function characterMatchesUniverse(character: Character, selected: Universe[]): boolean {
+  return selected.includes(character.universe);
+}
+
+function characterMatchesType(character: Character, type: CharacterType | null): boolean {
+  if (type === null) {
+    return true;
+  }
+  return character.type === type;
+}
+
+export function filterHeroes(characters: Character[], filters: FilterState): Character[] {
+  return characters.filter((character) => {
+    const powersActive = filters.powers.length > 0;
+    const universesActive = filters.universes.length > 0;
+
+    if (powersActive && !characterHasAllPowers(character, filters.powers)) {
+      return false;
+    }
+    if (universesActive && !characterMatchesUniverse(character, filters.universes)) {
+      return false;
+    }
+    if (!characterMatchesType(character, filters.type)) {
+      return false;
+    }
+    return true;
+  });
+}
+
+export function searchHeroes(characters: Character[], query: string): Character[] {
+  const trimmed = query.trim();
+  if (trimmed.length === 0) {
+    return characters;
+  }
+  const lower = trimmed.toLowerCase();
+  return characters.filter((character) => {
+    if (character.name.toLowerCase().includes(lower)) {
+      return true;
+    }
+    return character.aliases.some((alias) => alias.toLowerCase().includes(lower));
+  });
+}
+
+export function getVisibleHeroes(
+  characters: Character[],
+  filters: FilterState,
+  query: string,
+): Character[] {
+  return searchHeroes(filterHeroes(characters, filters), query);
+}
+
+/** Pure helper: roster slice for favorites page (IDs from client store). */
+export function filterCharactersByFavoriteIds(
+  characters: Character[],
+  favoriteIds: readonly string[],
+): Character[] {
+  if (favoriteIds.length === 0) {
+    return [];
+  }
+  const idSet = new Set<string>(favoriteIds);
+  return characters.filter((c) => idSet.has(c.id));
+}

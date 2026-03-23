@@ -1,0 +1,213 @@
+{
+    "items": [
+      {
+        "id": "batman",
+        "name": "Batman",
+        "fullName": "Bruce Wayne",
+        "score": 8.3,
+        "type": "hero",
+        "weakness": "Joker",
+        "universe": "DC",
+        "aliases": ["The Dark Knight", "The Caped Crusader", "Bruce Wayne"],
+        "powers": ["Intelligence", "Strength", "Speed"],
+        "powerStats": {
+          "strength": 72,
+          "speed": 68,
+          "intelligence": 100,
+          "magic": 0
+        },
+        "description": "Billionaire Bruce Wayne witnessed the murder of his parents as a child and swore to wage war on crime. With no superpowers, he relies on his intellect, physical conditioning, and an arsenal of technology to protect Gotham City.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/639.jpg"
+      },
+      {
+        "id": "joker",
+        "name": "Joker",
+        "fullName": "Unknown",
+        "score": 8.2,
+        "type": "villain",
+        "weakness": "Batman",
+        "universe": "DC",
+        "aliases": ["The Clown Prince of Crime", "Jack Napier"],
+        "powers": ["Intelligence"],
+        "powerStats": {
+          "strength": 45,
+          "speed": 50,
+          "intelligence": 90,
+          "magic": 0
+        },
+        "description": "Gotham City's most infamous criminal, the Joker is an unpredictable agent of chaos. His true identity remains unknown, making him one of Batman's most dangerous and enduring foes.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/719.jpg"
+      },
+      {
+        "id": "superman",
+        "name": "Superman",
+        "fullName": "Clark Kent",
+        "score": 9.6,
+        "type": "hero",
+        "weakness": "Lex Luthor",
+        "universe": "DC",
+        "aliases": ["Man of Steel", "Clark Kent", "Kal-El"],
+        "powers": ["Strength", "Speed", "Magic"],
+        "powerStats": {
+          "strength": 100,
+          "speed": 100,
+          "intelligence": 82,
+          "magic": 75
+        },
+        "description": "Rocketed from the dying planet Krypton as an infant, Kal-El was raised as Clark Kent in Kansas. Earth's yellow sun grants him extraordinary powers, which he uses as Superman to protect humanity.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/791.jpg"
+      },
+      {
+        "id": "gamora",
+        "name": "Gamora",
+        "fullName": "Gamora Zen Whoberi Ben Titan",
+        "score": 8.4,
+        "type": "hero",
+        "weakness": "Thanos",
+        "universe": "Marvel",
+        "aliases": ["Deadliest Woman in the Galaxy", "Most Dangerous Woman in the Universe"],
+        "powers": ["Strength", "Speed"],
+        "powerStats": {
+          "strength": 84,
+          "speed": 80,
+          "intelligence": 75,
+          "magic": 0
+        },
+        "description": "The adopted daughter of Thanos, Gamora was trained to be the perfect assassin. She later defected and joined the Guardians of the Galaxy, dedicating herself to fighting the very evil she was raised to serve.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/65.jpg"
+      },
+      {
+        "id": "thanos",
+        "name": "Thanos",
+        "fullName": "Thanos",
+        "score": 9.9,
+        "type": "villain",
+        "weakness": "Himself",
+        "universe": "Marvel",
+        "aliases": ["The Mad Titan", "The Dark Lord"],
+        "powers": ["Strength", "Intelligence", "Magic"],
+        "powerStats": {
+          "strength": 100,
+          "speed": 60,
+          "intelligence": 100,
+          "magic": 100
+        },
+        "description": "An Eternal from Titan obsessed with balancing the universe by any means necessary. Armed with the Infinity Gauntlet, Thanos commands near-limitless power and stands as one of Marvel's most formidable threats.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/1305.jpg"
+      },
+      {
+        "id": "wonder-woman",
+        "name": "Wonder Woman",
+        "fullName": "Diana Prince",
+        "score": 8.7,
+        "type": "hero",
+        "weakness": "Binding her bracelets",
+        "universe": "DC",
+        "aliases": ["Diana Prince", "Princess of the Amazons", "Daughter of Zeus"],
+        "powers": ["Strength", "Speed", "Magic"],
+        "powerStats": {
+          "strength": 100,
+          "speed": 90,
+          "intelligence": 88,
+          "magic": 85
+        },
+        "description": "An Amazonian warrior princess and demigoddess, Diana left her home of Themyscira to fight in the world of men. As Wonder Woman she champions justice, love, and equality with godlike strength and magical armaments.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/807.jpg"
+      },
+      {
+        "id": "lex-luthor",
+        "name": "Lex Luthor",
+        "fullName": "Alexander Joseph Luthor",
+        "score": 8.0,
+        "type": "villain",
+        "weakness": "Superman",
+        "universe": "DC",
+        "aliases": ["Alexander Luthor", "The Greatest Criminal Mind of Our Time"],
+        "powers": ["Intelligence"],
+        "powerStats": {
+          "strength": 55,
+          "speed": 40,
+          "intelligence": 100,
+          "magic": 0
+        },
+        "description": "Metropolis's most powerful businessman and Superman's greatest nemesis. Lex Luthor believes humanity should not need to depend on alien saviors, and uses his vast intellect and resources to prove it — no matter the cost.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/727.jpg"
+      },
+      {
+        "id": "aquaman",
+        "name": "Aquaman",
+        "fullName": "Arthur Curry",
+        "score": 3.5,
+        "type": "hero",
+        "weakness": "Dehydration",
+        "universe": "DC",
+        "aliases": ["Arthur Curry", "King of Atlantis", "Orin"],
+        "powers": ["Strength", "Speed", "Magic"],
+        "powerStats": {
+          "strength": 85,
+          "speed": 92,
+          "intelligence": 70,
+          "magic": 60
+        },
+        "description": "Half-human, half-Atlantean, Arthur Curry is the King of Atlantis and protector of the world's oceans. Despite being mocked for his perceived limitations, Aquaman commands vast armies and superhuman abilities.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/634.jpg"
+      },
+      {
+        "id": "thor",
+        "name": "Thor",
+        "fullName": "Thor Odinson",
+        "score": 9.2,
+        "type": "hero",
+        "weakness": "Worthiness",
+        "universe": "Marvel",
+        "aliases": ["God of Thunder", "Thor Odinson", "The Mighty Thor"],
+        "powers": ["Strength", "Speed", "Magic"],
+        "powerStats": {
+          "strength": 100,
+          "speed": 85,
+          "intelligence": 69,
+          "magic": 100
+        },
+        "description": "The Asgardian God of Thunder and one of the most powerful heroes in the Marvel universe. Wielding the enchanted hammer Mjolnir, Thor fights to protect both Asgard and Earth from cosmic threats.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/140.jpg"
+      },
+      {
+        "id": "spiderman",
+        "name": "Spiderman",
+        "fullName": "Peter Parker",
+        "score": 7.9,
+        "type": "hero",
+        "weakness": "Ethyl Chloride",
+        "universe": "Marvel",
+        "aliases": ["Peter Parker", "Your Friendly Neighbourhood Spider-Man", "Web-Slinger"],
+        "powers": ["Strength", "Speed", "Intelligence"],
+        "powerStats": {
+          "strength": 70,
+          "speed": 80,
+          "intelligence": 90,
+          "magic": 0
+        },
+        "description": "Bitten by a radioactive spider, teenager Peter Parker gained extraordinary abilities. Guided by the lesson that with great power comes great responsibility, he became Spider-Man, New York City's beloved protector.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/133.jpg"
+      },
+      {
+        "id": "harley-quinn",
+        "name": "Harley Quinn",
+        "fullName": "Harleen Frances Quinzel",
+        "score": 7.3,
+        "type": "villain",
+        "weakness": "Joker",
+        "universe": "DC",
+        "aliases": ["Harleen Quinzel", "Harlequin", "The Maid of Mischief"],
+        "powers": ["Strength", "Intelligence"],
+        "powerStats": {
+          "strength": 65,
+          "speed": 68,
+          "intelligence": 82,
+          "magic": 0
+        },
+        "description": "Former Arkham Asylum psychiatrist Dr. Harleen Quinzel fell dangerously in love with the Joker and became his accomplice Harley Quinn. Equal parts dangerous and unpredictable, she has since carved out her own criminal legacy.",
+        "image": "https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/701.jpg"
+      }
+    ]
+  }
