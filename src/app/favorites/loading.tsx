@@ -1,4 +1,4 @@
-import { SkeletonCard } from "@/components/SkeletonCard";
+import { SkeletonCard } from "@/shared/components/ui";
 import type { ReactElement } from "react";
 
 export default function FavoritesLoading(): ReactElement {

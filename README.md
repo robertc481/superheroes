@@ -32,16 +32,37 @@ npm run dev
 | Favorites | Toggle on cards; `/favorites` lists saved IDs after client hydration. |
 | Theme | Light / dark toggle (class-based). |
 | Responsive | Layout adapts for mobile, tablet, and desktop. |
-| Tests | Jest + Testing Library (`*.test.ts` / `*.test.tsx`). |
+| Tests | Jest + Testing Library (`*.test.ts` / `*.test.tsx`), colocated next to the code they cover. |
+
+## Project structure (high level)
+
+```text
+src/
+  app/                    # Next.js App Router (routes, layout, globals.css)
+  features/
+    characters/           # Roster: components, lib (heroes, filters, schema), types, data/
+    favorites/            # FavoriteButton, FavoritesContent, store, hooks
+  shared/
+    components/ui/        # Header, nav, EmptyState, SkeletonCard, DarkModeToggle
+    components/providers/ # Theme + Zustand rehydration
+    hooks/                # e.g. useDebounce
+    utils/                # URL ↔ filter/search parsing (urlState)
+  core/
+    config/               # Placeholder for app config
+    constants/            # Placeholder for cross-cutting constants
+```
+
+Imports use the `@/*` alias (see `tsconfig.json`), e.g. `@/features/characters`, `@/features/favorites`, `@/shared/utils`.
 
 ## Main technical decisions (concise)
 
 - **App Router** with clear **server vs client** boundaries: roster filtering and search run on the **server** from `searchParams` so the first paint matches the URL and there is no flash of an unfiltered list.
-- **URL as source of truth** for filters and search (`src/lib/urlState.ts`); **Zustand** is reserved for **favorites** only, with `persist` + explicit rehydration so SSR never reads `localStorage`.
-- **Data** is imported from `src/data/characters.json` in `src/lib/heroes.ts` (validated at module load). There are **no API routes**; for a static brief dataset this keeps latency and deployment simple while staying easy to swap for a real API later.
+- **URL as source of truth** for filters and search (`src/shared/utils/urlState.ts`); **Zustand** is reserved for **favorites** only, with `persist` + explicit rehydration so SSR never reads `localStorage`.
+- **Data** is imported from `src/features/characters/data/characters.json` in `src/features/characters/lib/heroes.ts` (validated at module load). There are **no API routes**; for a static brief dataset this keeps latency and deployment simple while staying easy to swap for a real API later.
 - **Filter semantics**: **all** selected power types must match a character; **any** selected universe can match; hero/villain type is a single optional constraint—combined with **and** across those dimensions.
 - **TypeScript** in strict mode for safer refactors.
-- **UI**: composable components under `src/components/`, loading and error boundaries via App Router conventions (`loading.tsx`, `error.tsx`).
+- **Feature-based layout**: character domain code lives under `src/features/characters/` (components, hooks, lib, types); favorites under `src/features/favorites/`; shared UI and utilities under `src/shared/` (`components/ui`, `hooks`, `utils`). App Router pages stay in `src/app/`. Barrel exports: `@/features/characters`, `@/features/favorites`, `@/shared/utils`.
+- **UI**: roster-specific components in the characters feature; reusable chrome (header, skeletons, empty state, theme toggle) in `src/shared/components/ui/`. Loading and error boundaries follow App Router conventions (`loading.tsx`, `error.tsx`).
 
 ## SSR, SSG, ISR, and CSR
 
@@ -73,11 +94,11 @@ npm run dev
 **ADR-4: Power types AND, universes OR, combined with type**
 
 - **Decision:** A character must have **all** selected power types; if any universes are selected, the character’s universe must be **one of** them; optional hero/villain type must match when set.
-- **Consequences:** Predictable faceted behavior aligned with the implementation in `filterHeroes`.
+- **Consequences:** Predictable faceted behavior aligned with the implementation in `filterHeroes` (`src/features/characters/lib/heroes.ts`).
 
 **ADR-5: Favorites via Zustand `persist` with controlled hydration**
 
-- **Decision:** `persist` with `skipHydration` and rehydration in app providers.
+- **Decision:** `persist` with `skipHydration` and rehydration in `src/shared/components/providers/Providers.tsx`.
 - **Consequences:** Device-local favorites; no server session required.
 
 **ADR-6: TypeScript strict mode**

@@ -1,5 +1,4 @@
-import { CharacterDetail } from "@/components/CharacterDetail";
-import { ALL_CHARACTERS, CHARACTER_BY_ID } from "@/lib/heroes";
+import { ALL_CHARACTERS, CHARACTER_BY_ID, CharacterDetail } from "@/features/characters";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";

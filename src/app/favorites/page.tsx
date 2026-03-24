@@ -1,5 +1,5 @@
-import { FavoritesContent } from "@/components/FavoritesContent";
-import { ALL_CHARACTERS } from "@/lib/heroes";
+import { ALL_CHARACTERS } from "@/features/characters";
+import { FavoritesContent } from "@/features/favorites";
 import type { Metadata } from "next";
 import type { ReactElement } from "react";
 

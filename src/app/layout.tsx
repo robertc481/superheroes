@@ -1,5 +1,5 @@
-import { Header } from "@/components/Header";
-import { Providers } from "@/components/providers/Providers";
+import { Providers } from "@/shared/components/providers/Providers";
+import { Header } from "@/shared/components/ui";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactElement, ReactNode } from "react";

@@ -1,13 +1,13 @@
-import { CharacterGrid } from "@/components/CharacterGrid";
-import { EmptyState } from "@/components/EmptyState";
-import { FilterSidebar } from "@/components/FilterSidebar";
-import { SearchBar } from "@/components/SearchBar";
-import { ALL_CHARACTERS, getVisibleHeroes } from "@/lib/heroes";
 import {
-  parseFilterState,
-  parseSearchQuery,
-} from "@/lib/urlState";
-import type { FilterResult } from "@/types";
+  ALL_CHARACTERS,
+  CharacterGrid,
+  FilterSidebar,
+  SearchBar,
+  getVisibleHeroes,
+} from "@/features/characters";
+import type { FilterResult } from "@/features/characters";
+import { EmptyState } from "@/shared/components/ui";
+import { parseFilterState, parseSearchQuery } from "@/shared/utils";
 import { Suspense, type ReactElement } from "react";
 
 export default async function HomePage({
